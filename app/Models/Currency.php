@@ -12,4 +12,8 @@ class Currency extends Model
     public function prices() {
         return $this->belongsToMany(Price::class);
     }
+
+    public function transactions() {
+        return $this->belongsToMany(Transaction::class);
+    }
 }

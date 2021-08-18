@@ -22,7 +22,11 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'type' => $this->faker->randomElement(['sell', 'buy']),
+            'date' => $this->faker->dateTime,
+            'amount' => $this->faker->numberBetween(1, 20),
+            'user_id' => 1,
+            'currency_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

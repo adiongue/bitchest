@@ -31,6 +31,6 @@ class CreateCurrencyPriceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('currency_prices');
+        Schema::dropIfExists('currency_price');
     }
 }
