@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <Sidebar siteName="Bitchest" siteLogo="../../assets/bitchest_logo.png" />
+    <Sidebar siteName="Bitchest" siteLogo="/assets/bitchest_logo_with_text.png" />
     <ContentContainer/>
   </div>
 </template>

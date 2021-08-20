@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import DataTable from '../containers/DataTable'
+import DataTable from '../../DataTable'
 export default {
     name: 'Users',
     components: {
