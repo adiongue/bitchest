@@ -1,4 +1,16 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/assets/bitchest_logo.png": "/assets/bitchest_logo.png",
+    "/assets/bitchest_logo_with_text.png": "/assets/bitchest_logo_with_text.png",
+    "/assets/bitcoin-cash.png": "/assets/bitcoin-cash.png",
+    "/assets/bitcoin.png": "/assets/bitcoin.png",
+    "/assets/cardano.png": "/assets/cardano.png",
+    "/assets/dash.png": "/assets/dash.png",
+    "/assets/ethereum.png": "/assets/ethereum.png",
+    "/assets/iota.png": "/assets/iota.png",
+    "/assets/litecoin.png": "/assets/litecoin.png",
+    "/assets/nem.png": "/assets/nem.png",
+    "/assets/ripple.png": "/assets/ripple.png",
+    "/assets/stellar.png": "/assets/stellar.png"
 }

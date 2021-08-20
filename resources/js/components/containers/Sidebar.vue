@@ -1,12 +1,10 @@
 <template>
     <div class="sidebar-container">
         <nav class="sidebar">
-            <a href="/" v-if="siteLogo" id="logo"><img :src="siteLogo" alt="app logo"></a>
-            <a href="/" v-else id="logo">{{ siteName }}</a>
+            <a href="/"  id="logo"><img v-if="siteLogo" :src="siteLogo" alt="app logo" width="120" height="37"></a>
             <div class="sidebar-inner">
                 <ul class="nav">
                     <li  class="nav-item" v-for="item in items" :key="item.text">
-                    <!-- <li  class="nav-item" v-for="item in items" :key="item.text" v-bind:class="{ active: isActive(item) }"> -->
                         <router-link :to="item.href">{{ item.text }}</router-link>
                     </li>
                 </ul>
@@ -66,13 +64,20 @@
                 document.querySelector('.sidebar-container').classList.toggle('container-reduced');
             },
             isActive: function(item) {
-                return this.$router.isActive(item.href)
+                return $router.isActive(item.href)
             }
         }
     }
 </script>
 <style scoped>
+
+    .router-link-exact-active {
+        color: #00b7ff;
+        text-decoration: underline;
+    }
+
     #logo {
+
         background-color: #3c4b84;
         flex-grow: 1;
         padding: 1em 1em 0 1em ;
@@ -110,7 +115,7 @@
         height: 100%;
         list-style: none;
         text-align: center;
-
+        padding: 1em 0 1em 0;
     }
     div .sidebar-inner ul li a{
         display: block;
@@ -118,7 +123,7 @@
         width: 100%;
         height: 100%;
         padding: 5px 0 5px 0;
-        margin: 1em 0 1em 0;
+        
     }
 
     .nav-item:hover {
