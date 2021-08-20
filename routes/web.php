@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.master');
+// public
+Route::post('/login', [AuthController::class, 'login']);
+
+// admin
+Route::group(['middleware' => ['auth:sanctum', 'admin']], function() {
+    Route::post('/newUser', [AuthController::class, 'register']);
+});
+
+// admin and client
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
