@@ -15,7 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $users = User::all()->paginate($this->paginate);
+        // dump($users);
+        // return $users;
         return User::paginate($this->paginate);
+
     }
 
     /**

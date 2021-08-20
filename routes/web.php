@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//home page
+Route::get('/', function () {
+    return view('layouts.master');
+});
 
 // public
 Route::post('/login', [AuthController::class, 'login']);
