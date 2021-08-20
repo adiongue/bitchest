@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -35,10 +36,37 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'email' => ['required'],
+        $fields = $request->validate([
+            'firstname' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'unique:users'],
+            'password' => ['required', 'string', 'confirmed'],
+            'is_admin' => ['required', 'boolean'],
+            'lastname' => ['string', 'nullable'],
+            'address' => ['string', 'nullable'],
+            'country' => ['string', 'nullable']
         ]);
-        return User::create($request->all());
+
+        if (!array_key_exists('lastname', $fields)) {
+            $fields['lastname'] = null;
+        }
+        if (!array_key_exists('address', $fields)) {
+            $fields['address'] = null;
+        }
+        if (!array_key_exists('country', $fields)) {
+            $fields['country'] = null;
+        }
+
+        $user = User::create([
+            'firstname' => $fields['firstname'],
+            'lastname' => $fields['lastname'],
+            'email' => $fields['email'],
+            'password' => bcrypt($fields['password']),
+            'is_admin' => $fields['is_admin'],
+            'address' => $fields['address'],
+            'country' => $fields['country']
+        ]);
+
+        return response(["id" => $user->id], 201);
     }
 
     /**
@@ -49,11 +77,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return response(['message' => "user with id $id does not exist"], 400);
+        }
+        return $user;
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -64,7 +96,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user in database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -72,17 +104,40 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return response(['message' => "user with id $id is not found"], 400);
+        }
+
+        $request->validate([
+            'firstname' => ['string'],
+            'email' => ['string', 'email', Rule::unique('users')->ignore($user->id)],
+            'is_admin' => ['boolean'],
+            'lastname' => ['string', 'nullable'],
+            'address' => ['string', 'nullable'],
+            'country' => ['string', 'nullable']
+        ]);
+
+        $user->update($request->all());
+
+        return response([], 204);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified database from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return response(['message' => "user with id $id is not found"], 400);
+        }
+
+        $user->delete();
+
+        return response();
     }
 }
