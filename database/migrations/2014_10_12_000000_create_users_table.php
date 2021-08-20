@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('firstname');
             $table->string('lastname')->nullable();
-            $table->string('county')->nullable();
+            $table->string('country')->nullable();
             $table->string('address')->nullable();
             $table->boolean('is_admin');
             $table->rememberToken();
