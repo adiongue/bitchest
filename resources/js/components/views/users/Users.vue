@@ -42,6 +42,14 @@ export default {
             },
         }
     },
+    methods: {
+        loadUsers() {
+            axios.get('./api/user').then(response => this.users = response.data);
+        }
+    },
+    mounted() {
+        this.loadUsers();
+    },
 }
 </script>
 

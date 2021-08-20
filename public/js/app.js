@@ -30954,6 +30954,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     };
+  },
+  methods: {
+    loadUsers: function loadUsers() {
+      var _this = this;
+
+      axios.get('./api/user').then(function (response) {
+        return _this.users = response.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.loadUsers();
   }
 });
 

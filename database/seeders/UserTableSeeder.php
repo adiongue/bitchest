@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class UserTableSeeder extends Seeder
@@ -24,14 +25,10 @@ class UserTableSeeder extends Seeder
                 'is_admin' => true,
                 'address' => '10 rue de Paris, 75003, Paris',
                 'country' => 'France',
-            ],
-            [
-                'firstname' => 'client1',
-                'email' => 'client1@bitchest.fr',
-                'password' => Hash::make("client1"),
-                'is_admin' => true,
-                'address' => '1 Boulevard Gallieni, 75008, Paris',
-                'country' => 'France',
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
 
