@@ -42,7 +42,6 @@ class AuthController extends Controller
             'country' => $fields['country']
         ]);
 
-        // $token = $user->createToken('bitchesttoken')->plainTextToken;
         return response(["id" => $user->id], 201);
     }
 

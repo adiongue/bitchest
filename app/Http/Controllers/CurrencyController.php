@@ -2,33 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Currency;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class CurrencyController extends Controller
 {
     protected $paginate = 10;
     /**
-     * Display a listing of the user.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return User::paginate($this->paginate);
+        return Currency::paginate($this->paginate);
     }
 
     /**
-     * Show the form for creating a new user.
+     * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
+        //
     }
 
     /**
-     * Store a newly created user in database.
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -36,13 +37,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required'],
+            'name' => ['required'],
+            'code' => ['required'],
         ]);
-        return User::create($request->all());
+        return Currency::create($request->all());
     }
 
     /**
-     * Display the specified user.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
