@@ -9,7 +9,18 @@ class Currency extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'code'];
+
     public function prices() {
         return $this->belongsToMany(Price::class);
+    }
+
+    public function transactions() {
+        return $this->belongsToMany(Transaction::class);
     }
 }
