@@ -4,7 +4,7 @@ info:
   title: "chestbit backend"
   description: "chestbit API"
 paths:
-  "/login":
+  "/api/login":
     post:
       description: "sig in a user from email and password"
       requestBody:
@@ -24,7 +24,7 @@ paths:
                 example: Bearer token
         400:
           description: bad request
-  "/newUser":
+  "/api/newUser":
     post:
       description: "register a new user"
       security:
@@ -47,7 +47,7 @@ paths:
                     type: integer
         400:
           description: bad request
-  "/logout":
+  "/api/logout":
     post:
       description: log out user
       security:
@@ -55,7 +55,7 @@ paths:
       responses:
         200:
           description: OK
-  "/users":
+  "/api/users":
     get:
       security:
         - bearerAuth: []
@@ -71,7 +71,7 @@ paths:
                   $ref: "#/components/schemas/userInfo"
         401:
           description: unauthorized
-  "/user/{id}":
+  "/api/user/{id}":
     summary: Represents a user
     description: >
       This resource represents an individual user in the system.

@@ -32,6 +32,16 @@ const routes = [
     name: 'Wallet',
     component: () => import('../components/views/Wallet.vue')
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../components/views/Login.vue')
+  },
 ]
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
 
 export default routes
