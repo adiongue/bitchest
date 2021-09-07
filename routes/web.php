@@ -20,7 +20,7 @@ Route::get('/{vue_capture?}', function () {
    })->where('vue_capture', '[\/\w\.-]*');
 
 // public
-/*Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/login', [AuthController::class, 'login']);
 
 // // admin
 // Route::group(['middleware' => ['auth:sanctum', 'admin']], function() {

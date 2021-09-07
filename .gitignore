@@ -21,3 +21,6 @@ db.json
 /resources/src/_drafts
 package-lock.json
 yarn.lock
+public/mix-manifest.json
+public/css/app.css
+public/js/app.js
