@@ -1,12 +1,12 @@
 <template>
-  <main>
+  <div class="users-container">
       <h1>Gerer les Utilisateurs</h1>
       <DataTable
         :header-fields="headerFields"
-        :data="data"
+        :data="users"
         :basePath="basePath"
         />
-  </main>
+  </div>
 </template>
 
 <script>
@@ -18,12 +18,13 @@ export default {
     },
     data: function() {
         return {
-            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin'],
-            basePath: 'users',
+            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin'],//Headers tab
+            basePath: 'user',
+            users : null,
             data: {
                 "1": {
                     id: 1,
-                    name: 'BitChest',
+                    lastName: 'BitChest',
                     firstName: 'BitChest',
                     country: 'US',
                     email: 'test@gmail.com',
@@ -32,7 +33,7 @@ export default {
                 },
                 "2": {
                     id: 2,
-                    name: 'Test',
+                    lastName: 'Test',
                     firstName: 'jose',
                     country: 'France',
                     email: 'tes@gmail.com',
@@ -44,7 +45,7 @@ export default {
     },
     methods: {
         loadUsers() {
-            axios.get('./api/user').then(response => this.users = response.data);
+            axios.get('/api/users').then(response => this.users = response.data);
         }
     },
     mounted() {
