@@ -11,7 +11,8 @@
             <tbody>
                 <tr class="table-row" v-for="item in data" :key="item.id" @click="rowClicked(item.id)">
                     <td v-for="(value, index) in item" :key="`cell-${index}`">
-                        <input v-if="typeof value === 'boolean'" type="checkbox" name="admin" :checked="value" @click="doNothing">
+                        <input v-if="typeof value === 'boolean'" type="checkbox" :name="index" :checked="value" @click="doNothing">
+                        <span v-else-if="value == null" class="no-data">-</span>
                         <span v-else>{{ value }}</span>
                     </td>
                 </tr>
@@ -42,6 +43,7 @@ export default {
         display: flex;
         justify-content: center;
     }
+    
     .styled-table {
         border-collapse: collapse;
         font-size: 0.9em;
@@ -74,4 +76,5 @@ export default {
     .styled-table tbody tr:last-of-type {
         border-bottom: 2px solid #3c4b84;
     }
+
 </style>

@@ -10,6 +10,8 @@ window.Vue = require('vue').default;
 import VueRouter from 'vue-router';
 import router from './router/index';
 import store from "./components/store/store";
+const VueFormulate = require('@braid/vue-formulate')
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,6 +29,7 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.use(VueFormulate.default)
 Vue.use(VueRouter)
 const app = new Vue({
     el: '#app',
