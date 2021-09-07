@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 // public
-Route::post('/login', [AuthController::class, 'login']);
+/*Route::post('/login', [AuthController::class, 'login']);
 
 // admin
 Route::group(['middleware' => ['auth:sanctum', 'admin']], function() {
@@ -34,4 +34,4 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user/{id}', [UserController::class, 'show']);
     Route::put('/user/{id}', [UserController::class, 'update']);
-});
+});*/
