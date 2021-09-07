@@ -23,12 +23,22 @@ class AuthController extends Controller
 
         $user = User::where('email', $fields['email'])->first();
 
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
-            return response(['message' => 'bad creds'], 400);
+        if (!$user) {
+            return response(['message' => 'EMAIL_NOT_FOUND'], 400);
+        }
+
+        if (!Hash::check($fields['password'], $user->password)) {
+            return response(['message' => 'INVALID_PASSWORD'], 400);
         }
 
         $token = $user->createToken('bitchesttoken')->plainTextToken;
-        return response($token, 201);
+        $role = "";
+        if ($user->is_admin) {
+            $role = 'admin';
+        } else {
+            $role = "client";
+        }
+        return response(["token" => $token, "role" => $role]);
     }
 
     /**

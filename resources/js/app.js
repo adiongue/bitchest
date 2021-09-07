@@ -9,8 +9,11 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import VueRouter from 'vue-router';
 import router from './router/index';
+import store from "./components/store/store";
 // import VueFormulate from '@braid/vue-formulate'
+
 const VueFormulate = require('@braid/vue-formulate')
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -34,4 +37,5 @@ Vue.use(VueRouter)
 const app = new Vue({
     el: '#app',
     router,
+    store,
 });
