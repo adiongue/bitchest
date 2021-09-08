@@ -15,12 +15,6 @@ class CurrencyTableSeeder extends Seeder
      */
     public function run()
     {
-        Currency::factory()->count(10)->create()->each(function ($currency){
-
-            $prices = Price::pluck('id')->shuffle()->slice(0, rand(1, 3))->all();
-            $currency->prices()->attach($prices);
-
-            $currency->save();
-        });
+        Currency::factory(10)->create();
     }
 }

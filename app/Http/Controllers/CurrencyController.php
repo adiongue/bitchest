@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Currency;
+use App\Models\Price;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CurrencyController extends Controller
 {
@@ -11,11 +13,34 @@ class CurrencyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return Currency::paginate($this->paginate);
+        $currencies = DB::table('currencies')->get();
+
+       $resp = array();
+        foreach ($currencies as $currency) {
+            $price = Price::where([
+                ['currency_id', '=', $currency->id],
+            ])
+            ->orderBy('created_at','desc')
+            ->first();
+            $priceValue = 0;
+            $priceDate = '';
+            if ($price) {
+                $priceValue = $price->value;
+                $priceDate = $price->created_at;
+            }
+            array_push($resp, [
+                'id'=> $currency->id,
+                'name' => $currency->name,
+                'code' => $currency->code,
+                'price' => $priceValue,
+                'price_date' => $priceDate,
+                ]);
+        }
+        return response()->json($resp);
     }
 
     /**
@@ -51,7 +76,30 @@ class CurrencyController extends Controller
      */
     public function show($id)
     {
-        //
+        $currency = Currency::find($id);
+        if (!$currency) {
+            return response(['message' => "currency with id $id is not found"], 400);
+        }
+        $pricesDB = Price::where([
+            ['currency_id', '=', $currency->id],
+        ])
+            ->orderBy('created_at','asc')
+            ->get();
+
+        $prices = array();
+        foreach ($pricesDB as $price) {
+            array_push($prices, [
+                'value' => $price->value,
+                'date' => $price->created_at,
+            ]);
+        }
+
+        return response([
+            'id'=> $currency->id,
+            'name' => $currency->name,
+            'code' => $currency->code,
+            'prices' => $prices,
+        ]);
     }
 
     /**
