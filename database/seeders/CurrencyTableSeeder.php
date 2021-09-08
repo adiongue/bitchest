@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Currency;
 use App\Models\Price;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
 class CurrencyTableSeeder extends Seeder
@@ -15,12 +16,26 @@ class CurrencyTableSeeder extends Seeder
      */
     public function run()
     {
-        Currency::factory()->count(10)->create()->each(function ($currency){
+        $Currencies_code = [
+            'Bitcoin' => 'BTC',
+            'Ethereum' => 'ETH',
+            'Ripple' => 'XRP',
+            'Bitcoin Cash' => 'BCH',
+            'Cardano' => 'ADA',
+            'Litecoin' => 'LTC',
+            'NEM' => 'XEM',
+            'Stellar' => 'XLM',
+            'IOTA' =>  'IOTA',
+            'Dash' => 'DASH'
+        ];
+        foreach ($Currencies_code as $key => $value) {
+            DB::table('currencies')->insert([
+                'name' => $key,
+                'code' => $value,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
-            $prices = Price::pluck('id')->shuffle()->slice(0, rand(1, 3))->all();
-            $currency->prices()->attach($prices);
-
-            $currency->save();
-        });
     }
 }
