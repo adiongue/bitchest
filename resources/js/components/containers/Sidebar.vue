@@ -74,19 +74,16 @@
     }
 </script>
 <style scoped>
-
     .router-link-exact-active {
         color: #00b7ff;
         text-decoration: underline;
     }
-
     #logo {
 
         background-color: #3c4b84;
         flex-grow: 1;
         padding: 1em 1em 0 1em ;
     }
-
     .sidebar-container {
         display: flex;
         flex-direction: column;
