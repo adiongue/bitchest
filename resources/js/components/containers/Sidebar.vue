@@ -25,7 +25,7 @@
             return {
                 items: [
                     {
-                        text: 'Accue',
+                        text: 'Accueil',
                         href: '/'
                     },
                     {
@@ -34,7 +34,7 @@
                     },
                     {
                         text: 'Marchés',
-                        href: '/store'
+                        href: '/market'
                     },
                     {
                         text: 'Portefeuille',
@@ -79,7 +79,6 @@
         text-decoration: underline;
     }
     #logo {
-
         background-color: #3c4b84;
         flex-grow: 1;
         padding: 1em 1em 0 1em ;

@@ -1,14 +1,16 @@
 <template>
-    <div>
-        <div class="users-container" v-if="this.users !== null">
-            <h1>Gerer les Utilisateurs</h1>
-            <DataTable 
-                :header-fields="headerFields"
-                :data="users"
-                :basePath="basePath"
-                />
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="users-container" v-if="this.users !== null">
+                <h1>Gerer les Utilisateurs</h1>
+                <DataTable 
+                    :header-fields="headerFields"
+                    :data="users"
+                    :basePath="basePath"
+                    />
+            </div>
+            <Loader v-else msg="ça arrive !.."/>
         </div>
-        <Loader v-else msg="ça arrive !.."/>
     </div>
 </template>
 

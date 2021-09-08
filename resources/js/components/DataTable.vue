@@ -11,6 +11,7 @@
             <tbody>
                 <tr class="table-row" v-for="item in data" :key="item.id" @click="rowClicked(item.id)">
                     <td v-for="(value, index) in item" :key="`cell-${index}`">
+                        <img v-if="img !== undefined && index === 'name'" :src="imgSrcGenerator(value)" :alt="value" width="20" height="20">
                         <input v-if="typeof value === 'boolean'" type="checkbox" :name="index" :checked="value" @click="doNothing">
                         <span v-else-if="value == null" class="no-data">-</span>
                         <span v-else>{{ value }}</span>
@@ -24,7 +25,7 @@
 <script>
 export default {
     name: 'DataTable',
-    props: ['headerFields', 'data', 'basePath'],
+    props: ['headerFields', 'data', 'basePath', 'img'],
     methods: {
         doNothing: function (e) {
             e.preventDefault();
@@ -32,6 +33,11 @@ export default {
         rowClicked (index) {
             this.$router.push({path: `/${this.basePath}/${index}`})
         },
+        imgSrcGenerator(name) { 
+            let imgName = name.replace(" ", "").toLowerCase(); 
+            let src = `../../assets/${imgName}.${this.img}`;
+            return src;
+        }
     },
 }
 </script>
@@ -62,6 +68,9 @@ export default {
         cursor: pointer;
         text-transform: capitalize;
         text-align: left;
+    }
+    .styled-table td img{
+        margin-right: 2%;
     }
     
     .styled-table tbody tr {
