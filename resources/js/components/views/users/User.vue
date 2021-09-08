@@ -1,108 +1,188 @@
 <template>
-<div class="user-container">
-    <h1>Modifer :</h1>
-    <form action="post" @submit.prevent="putUser">
-      <div class="fields-container" >
-        <p v-for="(value, index) in this.user" :key="`field-${index}`" >
-          <FormulateInput
-            :type="getTypeFromIdex(index)"
-            :name="index"
-            :value="value"
-            :label="index"
-            error-behavior="live"
-          />
-          <FormulateInput :field="name">
-            <template v-slot="{field}">
-              <input v-model="field.value">
-            </template>
-          </FormulateInput>
-        </p>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div v-if="this.user !== null">
+        <div>
+          <h3>Modifier : {{this.user.id}}</h3>
+          <hr />
+        </div>
+        <div class="alert alert-danger" v-if="error">
+          {{ error }}
+        </div>
+        <form @submit.prevent="onUpdate()">
+          <input type="hidden" v-model="user.id"/>  
+            <div class="form-group">
+              <label>LastName: </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model.trim="user.lastname"
+                />
+            </div>
+            <div class="form-group">
+              <label>FirstName: </label>
+              <input
+                type="text"
+                class="form-control"
+                v-model.trim="user.firstname"
+              />
+            </div>
+            <div class="form-group">
+              <label>Email: </label>
+              <input
+                type="text"
+                class="form-control"
+                v-model.trim="user.email"
+              />
+              <div class="error" v-if="errors.email">
+                {{ errors.email }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Pays: </label>
+              <input
+                type="text"
+                class="form-control"
+                v-model.trim="user.country"
+              />
+              <div class="error" v-if="errors.country">
+                {{ errors.country }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Addresse: </label>
+              <textarea
+                rows="3"
+                class="form-control"
+                v-model.trim="user.address">
+              </textarea>
+              <div class="error" v-if="errors.country">
+                {{ errors.country }}
+              </div>
+            </div>
+            <div class=form-group>
+              <label class="row">Droits de l'utilisateur: </label>
+              <div class="form-check">
+                <label clase="form-check-label col-md-4" for="admin">Administateur</label>
+                <input
+                  type="checkbox"
+                  id="admin"
+                  class="form-check-input "
+                  v-model.trim="user.is_admin"
+                />
+              </div>
+            </div>          
+            <button type="submit" class="btn btn-primary">
+                Modfier
+            </button>
+            <hr>
+            <h2>Détails</h2>
+            <div class="form-group">
+              <label>Ajouter le: </label>
+              <input
+                type="text"
+                class="form-control"
+                :value="formatDate(user.created_at)"
+                disabled
+              />
+              <div class="error" v-if="errors.country">
+                {{ errors.country }}
+              </div>
+            </div>          
+            <div class="my-3">
+    
+            </div>
+            <div class="form-group">
+              <label>Mis à jour: </label>
+              <input
+                type="text"
+                class="form-control"
+                :value="formatDate(user.updated_at)"
+                disabled
+              />
+              <div class="error" v-if="errors.country">
+                {{ errors.country }}
+              </div>
+            </div>
+  
+            <div  v-if="user.email_verified_at !== null" class="form-group">
+              <label>Mail validé le: </label>
+              <input
+                type="text"
+                class="form-control"
+                :value="formatDate(user.email_verified_at)"
+                disabled
+              />
+              <div class="error" v-if="errors.country">
+                {{ errors.country }}
+              </div>
+            </div>
+            <p v-else class="invalid"> Email non validé </p>
+          </form>
+        </div>
+        <Loader v-else msg="ça arrive !.."/>
       </div>
-      <button type="submit">Modifier</button>
-    </form>
-</div>
+  </div>
 </template>
 
 <script>
-import FormInput from '../../form/FormInput.vue'
-import FormTextarea from '../../form/FormTextarea.vue'
+import Loader from '../../Loader.vue'
 export default {
   name: 'User',
-    components: {
-        FormInput,
-        FormTextarea,
-    },
-    data: function() {
-        return {
-          user : null,
-          url : `/api/user/${this.$route.params.id}`
-        }
-    },
-    methods: {
-      loadUser() {
-        axios.get(this.url)
-        .then(response => {
-          this.user = response.data;
-          console.log(this.user['firstname']);
-        })
-        .catch(err => {console.log(err)});
-      },
-      putUser() {
+  components:{
+    Loader
+  },
+  data: function() {
+    return {
+      user : null,
+      url : `/api/user/${this.$route.params.id}`,
+      errors: [],
+      error: '',
+    }
+  },
+  methods: {
+    async loadUser() {
+      axios.get(this.url)
+      .then(response => {
+        this.user = response.data;
         console.log(this.user);
-        axios.put(this.url, this.user)
-        .then()
-        // .bind(this)
-        .catch(err => {console.log(err)});
-      },
-      getTypeFromIdex(index) {
-        //pb1 = la valeur n'ai pas transmise 
-        let type = null;
-        switch (index) {
-          case 'email':
-            type = 'email';
-            break;
-          case "address":
-            type = 'textarea';
-            break;
-          case index.match(".*_at")?.input: //pb1
-            type = 'date';
-            break;
-          case index.match("is_.*")?.input://pb1
-            type = 'checkbox';
-            break;
-          case index.match("\d")?.input:
-            type = 'number';
-            break;
-        
-          default: 
-            type = 'text';
-            break;
-        }
-        return type;
-      }
+      })
+      .catch(err => {console.log(err)});
+    },
+    onUpdate() {
+      console.log(this.user);
+      axios.put(this.url, this.user)
+      .then()
+      // .bind(this)
+      .catch(err => {console.log(err)});
+    },
+    formatDate(date) {
+      date = new Date(date);
+      let f = new Intl.DateTimeFormat('fr');
+      date = f.format(date);
       
-    },
-    mounted() {
-      this.loadUser(); 
-    },
+      return date;
+    }
+  },
+  mounted() {
+    this.loadUser(); 
+  },
 }
 </script>
-
 <style>
 div.user-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-form {
-  align-self: center;
-    background-color: #7b91eb;
-    width: 70%;
-}
+
 .fields-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items:baseline;
+}
+.invalid {
+  color: #dc3545;
 }
 </style>
