@@ -25,7 +25,7 @@
             return {
                 items: [
                     {
-                        text: 'Accueil',
+                        text: 'Accue',
                         href: '/'
                     },
                     {
