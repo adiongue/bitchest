@@ -1,20 +1,25 @@
 <template>
-  <div class="users-container">
-      <h1>Gerer les Utilisateurs</h1>
-      <DataTable
-        :header-fields="headerFields"
-        :data="users"
-        :basePath="basePath"
-        />
-  </div>
+    <div>
+        <div class="users-container" v-if="this.users !== null">
+            <h1>Gerer les Utilisateurs</h1>
+            <DataTable 
+                :header-fields="headerFields"
+                :data="users"
+                :basePath="basePath"
+                />
+        </div>
+        <Loader v-else msg="ça arrive !.."/>
+    </div>
 </template>
 
 <script>
+import Loader from '../../Loader.vue'
 import DataTable from '../../DataTable'
 export default {
     name: 'Users',
     components: {
         DataTable,
+        Loader,
     },
     data: function() {
         return {
@@ -44,7 +49,7 @@ export default {
         }
     },
     methods: {
-        loadUsers() {
+        async loadUsers() {
             axios.get('/api/users').then(response => this.users = response.data);
         }
     },

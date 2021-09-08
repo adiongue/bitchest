@@ -154,6 +154,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response();
+        return response('', 204);
     }
 }

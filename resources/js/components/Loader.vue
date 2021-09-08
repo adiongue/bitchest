@@ -10,7 +10,9 @@ export default {
 </script>
 
 <style>
+
 .lds {
+  padding-top: 50%;
   animation: lds 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 

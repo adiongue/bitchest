@@ -119,6 +119,7 @@
             </div>
             <p v-else class="invalid"> Email non validé </p>
           </form>
+          <button type="button" class="btn btn-danger" @click="deleteUser">Supprimer l'utilisateur</button>
         </div>
         <Loader v-else msg="ça arrive !.."/>
       </div>
@@ -162,6 +163,17 @@ export default {
       date = f.format(date);
       
       return date;
+    },
+    deleteUser() {
+      if (confirm("Etes vous sur de vouloir supprimer l'utilisateur ? ")) {
+        axios.delete(this.url)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(err => {console.log(err)});
+      } else {
+        console.log('User not delete !');
+      }
     }
   },
   mounted() {
@@ -175,7 +187,6 @@ div.user-container {
     flex-direction: column;
     justify-content: center;
 }
-
 .fields-container {
   display: flex;
   flex-direction: column;
