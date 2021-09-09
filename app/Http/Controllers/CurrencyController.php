@@ -43,15 +43,6 @@ class CurrencyController extends Controller
         return response()->json($resp);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -61,11 +52,27 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required'],
-            'code' => ['required'],
+        if (!$request->isJson()) {
+            response(['message' => 'body is required'], 400);
+        }
+        $fields = $request->validate([
+            'name' => ['required', 'string'],
+            'code' => ['required', 'string'],
+            'price' => ['required', 'numeric'],
         ]);
-        return Currency::create($request->all());
+
+        $newCurrency = Currency::create(
+            [
+                'name' => $fields['name'],
+                'code' => $fields['code']
+            ]
+        );
+        Price::create(
+            [
+                'value' => $fields['price']
+            ]
+        );
+        return response(['id'=> $newCurrency->id]);
     }
 
     /**
@@ -74,7 +81,7 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getCurrencyById($id)
     {
         $currency = Currency::find($id);
         if (!$currency) {
@@ -102,16 +109,6 @@ class CurrencyController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

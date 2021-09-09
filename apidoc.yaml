@@ -127,6 +127,49 @@ paths:
           description: bad request
         401:
           description: unauthorized
+  "/api/currencies":
+    description: getting all currencies.
+    get:
+      security:
+        - bearerAuth: [ ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/currencyInfo"
+        401:
+          description: unauthorized
+        500:
+          description: internal server error
+  "/api/currency/{id}":
+    description: getting a currency by id.
+    parameters:
+      - name: id
+        in: path
+        description: Currency ID
+        required: true
+        schema:
+          type: integer
+    get:
+      security:
+        - bearerAuth: [ ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  - $ref: "#/components/schemas/currencyInfo"
+        401:
+          description: unauthorized
+        500:
+          description: internal server error
 
 components:
   securitySchemes:
@@ -186,3 +229,39 @@ components:
       properties:
         id:
           type: integer
+    currency:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    currencyInfo:
+      allOf:
+        - $ref: "#/components/schemas/currency"
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+        price_date:
+          type: string
+          format: date
+    currency_detail:
+      allOf:
+        - $ref: "#/components/schemas/currency"
+      type: object
+      properties:
+        prices:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: number
+                format: float
+              date:
+                type: string
+                format: date

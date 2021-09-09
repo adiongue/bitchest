@@ -17,7 +17,7 @@ class CreatePricesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->double('value');
-            $table->dateTimeTz('date');
+            $table->dateTimeTz('date')->nullable();
             $table->timestamps();
         });
     }

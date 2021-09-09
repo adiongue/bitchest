@@ -33,7 +33,8 @@ Route::put('/user/{id}', [UserController::class, 'update']);
 
 // currencies
 Route::get('/currencies', [CurrencyController::class, 'index']);
-Route::get('/currency/{id}', [CurrencyController::class, 'show']);
+Route::get('/currency/{id}', [CurrencyController::class, 'getCurrencyById']);
+Route::post('/currency', [CurrencyController::class, 'store']);
 
 
 // admin
