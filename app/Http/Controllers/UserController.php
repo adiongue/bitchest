@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
@@ -16,11 +17,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $users = User::all()->paginate($this->paginate);
-        // dump($users);
-        // return $users;
         return User::paginate($this->paginate);
-
+    }
+    /**
+     * Return a Json listing of the users.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get()
+    {
+        $users = User::select('id','lastName', 'firstName', 'country', 'email', 'address', 'is_admin')
+        ->orderBy('created_at', 'desc')
+        ->get();
+        foreach ($users as $user) {
+            $user->is_admin = $user->is_admin == 1;
+        }
+        return response()->json($users);
     }
 
     /**
@@ -81,11 +93,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::find($id)->toArray();
         if (!$user) {
             return response(['message' => "user with id $id does not exist"], 400);
         }
-        return $user;
+        return response()->json($user);
     }
 
     /**
@@ -142,6 +154,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return response();
+        return response('', 204);
     }
 }

@@ -1,6 +1,5 @@
 /node_modules
-/public/hot
-/public/storage
+/public/*/
 /storage/*.key
 /vendor
 .env
@@ -13,3 +12,12 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+.DS_Store
+Thumbs.db
+db.json
+*.log
+/resources/public/
+.deploy*/
+/resources/src/_drafts
+package-lock.json
+yarn.lock

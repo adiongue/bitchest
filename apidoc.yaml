@@ -4,7 +4,7 @@ info:
   title: "chestbit backend"
   description: "chestbit API"
 paths:
-  "/login":
+  "/api/login":
     post:
       description: "sig in a user from email and password"
       requestBody:
@@ -24,7 +24,7 @@ paths:
                 example: Bearer token
         400:
           description: bad request
-  "/newUser":
+  "/api/newUser":
     post:
       description: "register a new user"
       security:
@@ -47,7 +47,7 @@ paths:
                     type: integer
         400:
           description: bad request
-  "/logout":
+  "/api/logout":
     post:
       description: log out user
       security:
@@ -55,6 +55,121 @@ paths:
       responses:
         200:
           description: OK
+  "/api/users":
+    get:
+      security:
+        - bearerAuth: []
+      description: getting all users information
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userInfo"
+        401:
+          description: unauthorized
+  "/api/user/{id}":
+    summary: Represents a user
+    description: >
+      This resource represents an individual user in the system.
+      Each user is identified by a numeric `id`.
+    parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      security:
+        - bearerAuth: []
+      description: getting an user information
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: "#/components/schemas/userInfo"
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+    put:
+      security:
+        - bearerAuth: [ ]
+      description: update an user information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        204:
+          description: User ha been successfullly updated
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+    delete:
+      security:
+        - bearerAuth: []
+        description: delete an user
+      responses:
+        204:
+          description: User ha been successfullly deleted
+        400:
+          description: bad request
+        401:
+          description: unauthorized
+  "/api/currencies":
+    description: getting all currencies.
+    get:
+      security:
+        - bearerAuth: [ ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/currencyInfo"
+        401:
+          description: unauthorized
+        500:
+          description: internal server error
+  "/api/currency/{id}":
+    description: getting a currency by id.
+    parameters:
+      - name: id
+        in: path
+        description: Currency ID
+        required: true
+        schema:
+          type: integer
+    get:
+      security:
+        - bearerAuth: [ ]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  - $ref: "#/components/schemas/currencyInfo"
+        401:
+          description: unauthorized
+        500:
+          description: internal server error
 
 components:
   securitySchemes:
@@ -74,18 +189,12 @@ components:
       required:
         - mail
         - password
-    newUser:
+    user:
       type: object
       properties:
         email:
           type: string
           format: email
-        password:
-          type: string
-          format: password
-        password_confirmation:
-          type: string
-          format: password
         firstname:
           type: string
         is_admin:
@@ -96,11 +205,63 @@ components:
           type: string
         country:
           type: string
+    newUser:
+      allOf:
+        - $ref: "#/components/schemas/user"
+      type: object
+      properties:
+        password:
+          type: string
+          format: password
+        password_confirmation:
+          type: string
+          format: password
       required:
         - mail
         - password
         - password_confirmation
         - firstname
         - is_admin
-
-
+    userInfo:
+      allOf:
+        - $ref: "#/components/schemas/user"
+      type: object
+      properties:
+        id:
+          type: integer
+    currency:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+    currencyInfo:
+      allOf:
+        - $ref: "#/components/schemas/currency"
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+        price_date:
+          type: string
+          format: date
+    currency_detail:
+      allOf:
+        - $ref: "#/components/schemas/currency"
+      type: object
+      properties:
+        prices:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: number
+                format: float
+              date:
+                type: string
+                format: date

@@ -25,7 +25,7 @@
             return {
                 items: [
                     {
-                        text: 'Accueil',
+                        text: 'Accue',
                         href: '/'
                     },
                     {
@@ -47,6 +47,10 @@
                     {
                         text: 'About',
                         href: '/about'
+                    },
+                    {
+                        text: 'Login',
+                        href: '/login'
                     },
                 ]
             }
@@ -70,19 +74,16 @@
     }
 </script>
 <style scoped>
-
     .router-link-exact-active {
         color: #00b7ff;
         text-decoration: underline;
     }
-
     #logo {
 
         background-color: #3c4b84;
         flex-grow: 1;
         padding: 1em 1em 0 1em ;
     }
-
     .sidebar-container {
         display: flex;
         flex-direction: column;
@@ -123,13 +124,13 @@
         width: 100%;
         height: 100%;
         padding: 5px 0 5px 0;
-        
+
     }
 
     .nav-item:hover {
         background-color: #4c5f80;
     }
-    
+
     nav button {
         width: 100%;
         height: 2em;
@@ -145,5 +146,5 @@
     .container-reduced {
         width: 5%;
     }
-    
+
 </style>

@@ -17,7 +17,7 @@ class Currency extends Model
     protected $fillable = ['name', 'code'];
 
     public function prices() {
-        return $this->belongsToMany(Price::class);
+        return $this->hasMany(Price::class);
     }
 
     public function transactions() {
