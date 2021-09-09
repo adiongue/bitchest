@@ -2,7 +2,7 @@
     <div>
         <div class="users-container" v-if="this.users !== null">
             <h1>Gerer les Utilisateurs</h1>
-            <DataTable 
+            <DataTable
                 :header-fields="headerFields"
                 :data="users"
                 :basePath="basePath"
@@ -15,6 +15,10 @@
 <script>
 import Loader from '../../Loader.vue'
 import DataTable from '../../DataTable'
+import axiosInstance from '../../utils/AxiosTokenInstance';
+import {mapGetters, mapMutations} from "vuex";
+import {GET_USER_TOKEN_GETTER, LOADING_SPINNER_SHOW_MUTATION} from "../../store/storeconstants";
+
 export default {
     name: 'Users',
     components: {
@@ -49,8 +53,23 @@ export default {
         }
     },
     methods: {
-        async loadUsers() {
-            axios.get('/api/users').then(response => this.users = response.data);
+        ...mapMutations({
+            showLoading: LOADING_SPINNER_SHOW_MUTATION,
+        }),
+        ...mapGetters('auth', {
+            token: GET_USER_TOKEN_GETTER,
+        }),
+        loadUsers() {
+            axiosInstance.get('/api/users')
+                .then(response => {
+                    this.users = response.data;
+                    console.log(this.users);
+                   // this.showLoading(false);
+                })
+                .catch(() => {
+                    console.log("errrrrrrrrrrr")
+                    this.showLoading(false);
+                });
         }
     },
     mounted() {
