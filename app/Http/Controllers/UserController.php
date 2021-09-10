@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function get()
     {
-        $users = User::select('id','lastName', 'firstName', 'country', 'email', 'address', 'is_admin')
+        $users = User::select('id','lastName', 'firstName', 'country', 'email', 'address', 'is_admin', 'fund')
         ->orderBy('created_at', 'desc')
         ->get();
         foreach ($users as $user) {

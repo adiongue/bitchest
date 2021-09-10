@@ -3,7 +3,7 @@
         <div class="col-md-10 offset-md-1">
             <div class="users-container" v-if="this.users !== null">
                 <h1>Gerer les Utilisateurs</h1>
-                <DataTable 
+                <DataTable
                     :header-fields="headerFields"
                     :data="users"
                     :basePath="basePath"
@@ -29,7 +29,7 @@ export default {
     },
     data: function() {
         return {
-            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin'],//Headers tab
+            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin', 'fond($)'],//Headers tab
             basePath: 'user',
             users : null,
             data: {

@@ -10,7 +10,7 @@
           {{ error }}
         </div>
         <form @submit.prevent="onUpdate()">
-          <input type="hidden" v-model="user.id"/>  
+          <input type="hidden" v-model="user.id"/>
             <div class="form-group">
               <label>LastName: </label>
                 <input
@@ -71,7 +71,7 @@
                   v-model.trim="user.is_admin"
                 />
               </div>
-            </div>          
+            </div>
             <button type="submit" class="btn btn-primary">
                 Modfier
             </button>
@@ -88,9 +88,9 @@
               <div class="error" v-if="errors.country">
                 {{ errors.country }}
               </div>
-            </div>          
+            </div>
             <div class="my-3">
-    
+
             </div>
             <div class="form-group">
               <label>Mis à jour: </label>
@@ -104,7 +104,7 @@
                 {{ errors.country }}
               </div>
             </div>
-  
+
             <div  v-if="user.email_verified_at !== null" class="form-group">
               <label>Mail validé le: </label>
               <input
@@ -128,6 +128,7 @@
 
 <script>
 import Loader from '../../Loader.vue'
+import axiosInstance from "../../utils/AxiosTokenInstance";
 export default {
   components:{
     Loader
@@ -142,7 +143,7 @@ export default {
   },
   methods: {
     async loadUser() {
-      axios.get(this.url)
+      axiosInstance.get(this.url)
       .then(response => {
         this.user = response.data;
       })
@@ -158,7 +159,7 @@ export default {
       date = new Date(date);
       let f = new Intl.DateTimeFormat('fr');
       date = f.format(date);
-      
+
       return date;
     },
     deleteUser() {
@@ -174,7 +175,7 @@ export default {
     }
   },
   mounted() {
-    this.loadUser(); 
+    this.loadUser();
   },
 }
 </script>
