@@ -129,7 +129,6 @@
 <script>
 import Loader from '../../Loader.vue'
 export default {
-  name: 'User',
   components:{
     Loader
   },
@@ -146,7 +145,6 @@ export default {
       axios.get(this.url)
       .then(response => {
         this.user = response.data;
-        console.log(this.user);
       })
       .catch(err => {console.log(err)});
     },
@@ -154,7 +152,6 @@ export default {
       console.log(this.user);
       axios.put(this.url, this.user)
       .then()
-      // .bind(this)
       .catch(err => {console.log(err)});
     },
     formatDate(date) {
