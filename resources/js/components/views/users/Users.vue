@@ -63,7 +63,6 @@ export default {
             axiosInstance.get('/api/users')
                 .then(response => {
                     this.users = response.data;
-                    console.log(this.users);
                    // this.showLoading(false);
                 })
                 .catch(() => {

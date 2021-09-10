@@ -27,7 +27,7 @@ Route::post('/login', [AuthController::class, 'login']);
 // admin
 Route::group(['middleware' => ['auth:sanctum', 'admin']], function() {
     Route::post('/newUser', [UserController::class, 'store']);
-    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users', [UserController::class, 'get']);
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
     Route::put('/user/{id}', [UserController::class, 'update']);
 });

@@ -24,7 +24,7 @@ class PriceFactory extends Factory
         return [
             'value' => $this->faker->randomFloat(),
             'currency_id' => $this->faker->numberBetween(1, 10),
-            'date' => $this->faker->dateTime(),
+            'date' => $this->faker->dateTimeBetween('-2 years', '+0 days'),
         ];
     }
 }
