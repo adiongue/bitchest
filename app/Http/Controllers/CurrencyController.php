@@ -24,13 +24,13 @@ class CurrencyController extends Controller
             $price = Price::where([
                 ['currency_id', '=', $currency->id],
             ])
-            ->orderBy('created_at','desc')
+            ->orderBy('date','desc')
             ->first();
             $priceValue = 0;
             $priceDate = '';
             if ($price) {
                 $priceValue = $price->value;
-                $priceDate = $price->created_at;
+                $priceDate = $price->date;
             }
             array_push($resp, [
                 'id'=> $currency->id,
@@ -90,14 +90,14 @@ class CurrencyController extends Controller
         $pricesDB = Price::where([
             ['currency_id', '=', $currency->id],
         ])
-            ->orderBy('created_at','asc')
+            ->orderBy('date','desc')
             ->get();
 
         $prices = array();
         foreach ($pricesDB as $price) {
             array_push($prices, [
                 'value' => $price->value,
-                'date' => $price->created_at,
+                'date' => $price->date,
             ]);
         }
 
@@ -107,29 +107,5 @@ class CurrencyController extends Controller
             'code' => $currency->code,
             'prices' => $prices,
         ]);
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

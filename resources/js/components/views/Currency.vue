@@ -25,6 +25,7 @@
 
 <script>
 import Loader from '../Loader.vue'
+import axiosInstance from "../utils/AxiosTokenInstance";
 export default {
   components:{
     Loader
@@ -42,14 +43,14 @@ export default {
   },
   methods:{
     async loadCurrency() {
-      axios.get(this.url)
+      axiosInstance.get(this.url)
       .then(response => {
         this.currency = response.data;
       })
       .catch(err => {console.log(err)});
     },
-    imgSrcGenerator(name) { 
-      let imgName = name.replace(" ", "").toLowerCase(); 
+    imgSrcGenerator(name) {
+      let imgName = name.replace(" ", "").toLowerCase();
       let src = `../../assets/${imgName}.png`;
       return src;
     },

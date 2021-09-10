@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('country')->nullable();
             $table->string('address')->nullable();
             $table->boolean('is_admin');
+            $table->double('fund');
             $table->rememberToken();
             $table->timestamps();
         });
