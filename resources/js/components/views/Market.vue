@@ -6,8 +6,8 @@
           :header-fields="headerFields"
           :data="currencies"
           :basePath="basePath"
-          imgExtention="png"
           :showId="false"
+          imgExtention="png"
         />
       </div>
       <Loader v-else msg="ça arrive !.."/>
@@ -27,48 +27,19 @@ export default {
   data: function() {
     return {
       headerFields:['Nom', 'Code','Prix ($)'],//Headers tab
-      basePath: 'currencies',
-      currencies : [
-        {
-          id: 0,
-          name:'Bitcoin',
-          code: 'BTC',
-          price: 40000.086
-        },
-        {
-          id: 1,
-          name:'Ethereum',
-          code: 'ETH',
-          price: 20000.56
-        },
-        {
-          id: 2,
-          name:'Ripple',
-          code: 'XRP',
-          price: 10000.086
-        },
-        {
-          id: 3,
-          name:'BitcoinCash',
-          code: 'BCH',
-          price: 40.78
-        },
-        {
-          id: 4,
-          name:'Cardano',
-          code: 'ADA',
-          price: 0.98
-        },
-      ],
+      basePath: 'currency',
+      currencies : [],
     }
   },
   methods: {
     async loadCurrencies() {
-      axios.get('/api/currencies').then(response => this.currencies = response.data);
+      axios.get('/api/currencies').then(response => {
+        this.currencies = response.data.filter((currency) => delete currency.price_date);
+      });
     },
   },
   mounted() {
-    //this.loadCurrencies();
+    this.loadCurrencies();
   },
 
 }

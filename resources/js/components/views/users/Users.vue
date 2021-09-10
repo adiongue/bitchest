@@ -52,6 +52,7 @@ export default {
     },
     methods: {
         async loadUsers() {
+            console.log(response.data);
             axios.get('/api/users').then(response => this.users = response.data);
         }
     },

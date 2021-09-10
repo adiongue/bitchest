@@ -33,6 +33,11 @@ const routes = [
     component: () => import('../components/views/Market.vue')
   },
   {
+    path: '/currency/:id',
+    name: 'Currency',
+    component: () => import('../components/views/Currency.vue')
+  },
+  {
     path: '/wallet',
     name: 'Wallet',
     component: () => import('../components/views/Wallet.vue')
