@@ -26,22 +26,13 @@ class UserController extends Controller
      */
     public function get()
     {
-        $users = User::select('id','lastName', 'firstName', 'country', 'email', 'address', 'is_admin')
+        $users = User::select('id','lastName', 'firstName', 'country', 'email', 'address', 'is_admin', 'fund')
         ->orderBy('created_at', 'desc')
         ->get();
         foreach ($users as $user) {
             $user->is_admin = $user->is_admin == 1;
         }
         return response()->json($users);
-    }
-
-    /**
-     * Show the form for creating a new user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
     }
 
     /**
@@ -100,16 +91,6 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    /**
-     * Show the form for editing the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified user in database.
@@ -155,5 +136,20 @@ class UserController extends Controller
         $user->delete();
 
         return response('', 204);
+    }
+
+    /**
+     * getting current user info.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserInfos()
+    {
+        $user = auth()->user();
+        if ($user == null) {
+            return response(['message' => "unauthenticated"], 401);
+        }
+
+        return response($user);
     }
 }

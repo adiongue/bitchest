@@ -3,7 +3,7 @@
         <div class="col-md-10 offset-md-1">
             <div class="users-container" v-if="this.users !== null">
                 <h1>Gerer les Utilisateurs</h1>
-                <DataTable 
+                <DataTable
                     :header-fields="headerFields"
                     :data="users"
                     :basePath="basePath"
@@ -17,6 +17,10 @@
 <script>
 import Loader from '../../Loader.vue'
 import DataTable from '../../DataTable'
+import axiosInstance from '../../utils/AxiosTokenInstance';
+import {mapGetters, mapMutations} from "vuex";
+import {GET_USER_TOKEN_GETTER, LOADING_SPINNER_SHOW_MUTATION} from "../../store/storeconstants";
+
 export default {
     name: 'Users',
     components: {
@@ -25,7 +29,7 @@ export default {
     },
     data: function() {
         return {
-            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin'],//Headers tab
+            headerFields:['#', 'Nom', 'Prénom','Pays', 'Email', 'address', 'Admin', 'fond($)'],//Headers tab
             basePath: 'user',
             users : null,
             data: {
@@ -51,9 +55,22 @@ export default {
         }
     },
     methods: {
-        async loadUsers() {
-            console.log(response.data);
-            axios.get('/api/users').then(response => this.users = response.data);
+        ...mapMutations({
+            showLoading: LOADING_SPINNER_SHOW_MUTATION,
+        }),
+        ...mapGetters('auth', {
+            token: GET_USER_TOKEN_GETTER,
+        }),
+        loadUsers() {
+            axiosInstance.get('/api/users')
+                .then(response => {
+                    this.users = response.data;
+                   // this.showLoading(false);
+                })
+                .catch(() => {
+                    console.log("errrrrrrrrrrr")
+                    this.showLoading(false);
+                });
         }
     },
     mounted() {

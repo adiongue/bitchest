@@ -32,13 +32,12 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('bitchesttoken')->plainTextToken;
-        $role = "";
         if ($user->is_admin) {
             $role = 'admin';
         } else {
             $role = "client";
         }
-        return response(["token" => $token, "role" => $role]);
+        return response(["token" => $token, "role" => $role, "fund" => round($user->fund, 2)]   );
     }
 
     /**

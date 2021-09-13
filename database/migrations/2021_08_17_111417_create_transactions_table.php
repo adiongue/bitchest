@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->enum('type', ['sell', 'buy']);
             $table->dateTimeTz('date');
             $table->integer('amount');
+            $table->double('value');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('currency_id');
 

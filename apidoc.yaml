@@ -12,7 +12,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#components/schemas/log-in"
+              $ref: "#/components/schemas/log-in"
       responses:
         201:
           description: valid user cred
@@ -94,7 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                 $ref: "#/components/schemas/userInfo"
+                $ref: "#/components/schemas/userInfo"
         400:
           description: bad request
         401:
@@ -119,7 +119,7 @@ paths:
     delete:
       security:
         - bearerAuth: []
-        description: delete an user
+      description: delete an user
       responses:
         204:
           description: User ha been successfullly deleted
@@ -165,7 +165,7 @@ paths:
               schema:
                 type: array
                 items:
-                  - $ref: "#/components/schemas/currencyInfo"
+                  $ref: "#/components/schemas/currencyInfo"
         401:
           description: unauthorized
         500:

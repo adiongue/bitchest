@@ -24,13 +24,13 @@ class CurrencyController extends Controller
             $price = Price::where([
                 ['currency_id', '=', $currency->id],
             ])
-            ->orderBy('created_at','desc')
+            ->orderBy('date','desc')
             ->first();
             $priceValue = 0;
             $priceDate = '';
             if ($price) {
                 $priceValue = $price->value;
-                $priceDate = $price->created_at;
+                $priceDate = $price->date;
             }
             array_push($resp, [
                 'id'=> $currency->id,
@@ -90,14 +90,14 @@ class CurrencyController extends Controller
         $pricesDB = Price::where([
             ['currency_id', '=', $currency->id],
         ])
-            ->orderBy('created_at','asc')
+            ->orderBy('date','desc')
             ->get();
 
         $prices = array();
         foreach ($pricesDB as $price) {
             array_push($prices, [
                 'value' => $price->value,
-                'date' => $price->created_at,
+                'date' => $price->date,
             ]);
         }
 
@@ -109,27 +109,52 @@ class CurrencyController extends Controller
         ]);
     }
 
-
     /**
-     * Update the specified resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function getUserCurrencies()
     {
-        //
-    }
+        $userID = auth()->id();
+        if ($userID == null) {
+            return response(['message' => "unauthenticated"], 401);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $transactions = DB::table('transactions')
+            ->select('currency_id', DB::raw('SUM(amount) as amount'))
+            ->where([
+                ['user_id', '=', $userID],
+                ['type', '=', 'buy'],
+            ])
+            ->groupBy(['currency_id']);
+
+        $currencies = DB::table('currencies')
+            ->joinSub($transactions, 'transactions', function ($join) {
+                $join->on('currencies.id', '=', 'transactions.currency_id');
+            })
+            ->select(['id', 'name', 'code', 'amount'])
+            ->get();
+        $resp = array();
+        foreach ($currencies as $currency) {
+            $price = Price::where([
+                ['currency_id', '=', $currency->id],
+            ])
+                ->orderBy('date','desc')
+                ->first();
+            $priceValue = 0;
+            if ($price) {
+                $priceValue = $price->value;
+            }
+            array_push($resp, [
+                'id'=> $currency->id,
+                'name' => $currency->name,
+                'code' => $currency->code,
+                'amount' => $currency->amount,
+                'price' => $priceValue,
+            ]);
+        }
+
+        return response($resp);
     }
 }

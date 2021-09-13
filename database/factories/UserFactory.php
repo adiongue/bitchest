@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'created_at' => now(),
             'updated_at' => now(),
+            'fund' => $this->faker->randomFloat(2, 10, 500),
         ];
     }
 
