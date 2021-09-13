@@ -51,6 +51,10 @@
                         href: '/wallet'
                     },
                     {
+                        text: 'Transactions',
+                        href: '/transactions'
+                    },
+                    {
                         text: 'Paramètres',
                         href: '/settings'
                     },
@@ -79,14 +83,13 @@
                 return $router.isActive(item.href)
             },
             checkAuth() {
-                this.isAuth = JSON.parse(localStorage.getItem('userData')) !== null;
+                this.isAuth = localStorage.getItem('userData') !== null;
             },
             logout() {
                 axiosInstance.post('/api/logout')
                     .then(r => {
                         console.log(r.status);
                         localStorage.removeItem('userData');
-                        this.checkAuth();
                         console.log("jefbiezhf")
                         this.$router.push('/login');
                     })

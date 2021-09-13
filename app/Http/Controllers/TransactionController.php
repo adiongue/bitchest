@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Currency;
-use App\Models\Price;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +16,7 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function byCurrency(Request $request)
+    public function buyCurrency(Request $request)
     {
         $userID = auth()->id();
         if ($userID == null) {
@@ -43,6 +41,7 @@ class TransactionController extends Controller
             'date' => now(),
             'amount' => $fields['amount'],
             'user_id' => $userID,
+            'value' => $price->value,
             'currency_id' => $fields['currency_id']
          ]);
 
@@ -124,5 +123,30 @@ class TransactionController extends Controller
         }
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getTransactions()
+    {
+        $userID = auth()->id();
+        if ($userID == null) {
+            return response(['message' => "unauthenticated"], 401);
+        }
 
+        $transactions = DB::table('transactions')
+            ->where([
+                ['user_id', '=', $userID],
+            ])
+            ->join('currencies', function ($join){
+                $join->on('transactions.currency_id', '=', 'currencies.id');
+            })
+            ->select(['transactions.id', 'name', 'code', 'type', 'amount', 'value','transactions.updated_at as date' ])
+            ->orderBy('date', 'desc')
+            ->get();
+
+        return response($transactions);
+    }
 }

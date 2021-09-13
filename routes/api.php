@@ -43,7 +43,8 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     // currencies
     Route::get('/currencies', [CurrencyController::class, 'index']);
     Route::get('/currency/{id}', [CurrencyController::class, 'getCurrencyById']);
-    Route::post('/buyCurrency', [TransactionController::class, 'byCurrency']);
+    Route::post('/buyCurrency', [TransactionController::class, 'buyCurrency']);
     Route::post('/sellCurrency', [TransactionController::class, 'sellCurrency']);
     Route::get('/userCurrencies', [CurrencyController::class, 'getUserCurrencies']);
+    Route::get('/transactions', [TransactionController::class, 'getTransactions']);
 });

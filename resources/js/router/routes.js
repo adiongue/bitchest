@@ -47,6 +47,11 @@ const routes = [
     name: 'login',
     component: () => import('../components/views/Login.vue')
   },
+  {
+    path: '/transactions',
+    name: 'transactions',
+    component: () => import('../components/views/Transactions')
+  },
 ]
 
 export default routes

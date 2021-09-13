@@ -25,6 +25,7 @@ class TransactionFactory extends Factory
             'type' => $this->faker->randomElement(['sell', 'buy']),
             'date' => $this->faker->dateTime,
             'amount' => $this->faker->numberBetween(1, 20),
+            'value' =>$this->faker->randomFloat(2, 100, 500),
             'user_id' => 1,
             'currency_id' => $this->faker->numberBetween(1, 10),
         ];
