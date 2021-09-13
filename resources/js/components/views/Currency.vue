@@ -7,15 +7,16 @@
             <img :src="imgSrcGenerator(currency.name)" :alt="currency.name" width="30" height="30">
             <h2>{{currency.name}}</h2>
             <p>{{currency.code}}</p>
+            <span>{{price}} €</span>
           </div>
         </div>
-        <form action="" method="get">
+        <form @submit.prevent="buyCurrency()">
           <fieldset>
             <legend>Acheter du {{ this.currency.name}}</legend>
               <input type="number" id="quantity" name="quantity" v-model="quantity">
-              <span>{{getPriceToBuy()}} &euro;</span>
+              <span> {{getPriceToBuy()}} &euro;</span>
           </fieldset>
-          <button class="btn-submit" type="submit">Acheter</button>
+          <button class="btn-submit" type="submit" v-if="this.quantity >= 0">Acheter</button>
         </form>
       </div>
       <Loader v-else msg="ça arrive !.."/>
@@ -46,6 +47,7 @@ export default {
       axiosInstance.get(this.url)
       .then(response => {
         this.currency = response.data;
+        this.price = this.currency.prices[0].value;
       })
       .catch(err => {console.log(err)});
     },
@@ -56,7 +58,16 @@ export default {
     },
     getPriceToBuy() {
       let lastPrice = this.currency.prices[0].value;
-      return lastPrice * this.quantity;
+      return lastPrice.toFixed(2) * this.quantity;
+    },
+    buyCurrency() {
+        let body = {'currency_id': this.currency.id, 'amount': this.quantity};
+        axiosInstance.post('/api/buyCurrency', body)
+            .then(response => {
+                console.log(response.status);
+                console.log(response.data);
+            })
+            .catch(err => {console.log(err)});
     }
   },
   mounted(){

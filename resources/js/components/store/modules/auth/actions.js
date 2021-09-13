@@ -7,9 +7,18 @@ import {
     LOGOUT_ACTION,
     SET_USER_TOKEN_DATA_MUTATION,
 } from '../../storeconstants';
+import axiosInstance from "../../../utils/AxiosTokenInstance";
 
 export default {
     [LOGOUT_ACTION](context) {
+        try {
+            axiosInstance.post('http://127.0.0.1:8000/api/logout')
+                .then(r => console.log(r.status));
+        } catch (err) {
+            throw LoginValidations.getErrorMessageFromCode(
+                err.response.data.message,
+            );
+        }
         context.commit(SET_USER_TOKEN_DATA_MUTATION, {
             email: null,
             token: null,
@@ -59,6 +68,7 @@ export default {
                 token: response.data.token,
                 expiresIn: expirationTime,
                 refreshToken: response.data.refreshToken,
+                fund: response.data.fund,
             };
 
             localStorage.setItem('userData', JSON.stringify(tokenData));

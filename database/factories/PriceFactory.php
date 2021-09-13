@@ -22,7 +22,7 @@ class PriceFactory extends Factory
     public function definition()
     {
         return [
-            'value' => $this->faker->randomFloat(),
+            'value' => $this->faker->randomFloat(2, 100, 500),
             'currency_id' => $this->faker->numberBetween(1, 10),
             'date' => $this->faker->dateTimeBetween('-2 years', '+0 days'),
         ];

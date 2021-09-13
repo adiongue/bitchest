@@ -27,9 +27,7 @@ class UserTableSeeder extends Seeder
                 'country' => 'France',
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-                'fund' => 500.0,
+                'fund' => 50000.0,
             ]
         ]);
 

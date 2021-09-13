@@ -9,7 +9,7 @@ class Price extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['price'];
+    protected $fillable = ['value', 'date'];
 
     public function currencies() {
         return $this->belongsToMany(Currency::class);
