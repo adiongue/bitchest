@@ -108,4 +108,53 @@ class CurrencyController extends Controller
             'prices' => $prices,
         ]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserCurrencies()
+    {
+        $userID = auth()->id();
+        if ($userID == null) {
+            return response(['message' => "unauthenticated"], 401);
+        }
+
+        $transactions = DB::table('transactions')
+            ->select('currency_id', DB::raw('SUM(amount) as amount'))
+            ->where([
+                ['user_id', '=', $userID],
+                ['type', '=', 'buy'],
+            ])
+            ->groupBy(['currency_id']);
+
+        $currencies = DB::table('currencies')
+            ->joinSub($transactions, 'transactions', function ($join) {
+                $join->on('currencies.id', '=', 'transactions.currency_id');
+            })
+            ->select(['id', 'name', 'code', 'amount'])
+            ->get();
+        $resp = array();
+        foreach ($currencies as $currency) {
+            $price = Price::where([
+                ['currency_id', '=', $currency->id],
+            ])
+                ->orderBy('date','desc')
+                ->first();
+            $priceValue = 0;
+            if ($price) {
+                $priceValue = $price->value;
+            }
+            array_push($resp, [
+                'id'=> $currency->id,
+                'name' => $currency->name,
+                'code' => $currency->code,
+                'amount' => $currency->amount,
+                'price' => $priceValue,
+            ]);
+        }
+
+        return response($resp);
+    }
 }

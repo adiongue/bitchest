@@ -7,6 +7,12 @@
                     <li  class="nav-item" v-for="item in items" :key="item.text">
                         <router-link :to="item.href">{{ item.text }}</router-link>
                     </li>
+                    <li v-if="isAuth" class="nav-item" key="logout" @click="logout()">
+                        Déconnecter
+                    </li>
+                    <li v-else class="nav-item" key="login" >
+                        <router-link to="/login">Connecter</router-link>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -15,6 +21,10 @@
 </template>
 
 <script>
+    import {mapActions} from "vuex";
+    import {LOGOUT_ACTION} from "../store/storeconstants";
+    import axiosInstance from "../utils/AxiosTokenInstance";
+
     export default {
         name: 'Sidebar',
         props: {
@@ -44,18 +54,15 @@
                         text: 'Paramètres',
                         href: '/settings'
                     },
-                    {
-                        text: 'About',
-                        href: '/about'
-                    },
-                    {
-                        text: 'Login',
-                        href: '/login'
-                    },
-                ]
+                ],
+                isAuth: false
             }
+
         },
         methods: {
+            ...mapActions('auth', {
+                logoutAction: LOGOUT_ACTION,
+            }),
             toggleReducer: function() {
                 document.querySelector('.sidebar').classList.toggle('reduced');
 
@@ -68,8 +75,28 @@
                 document.querySelector('.sidebar-container').classList.toggle('container-reduced');
             },
             isActive: function(item) {
+                this.checkAuth();
                 return $router.isActive(item.href)
+            },
+            checkAuth() {
+                this.isAuth = JSON.parse(localStorage.getItem('userData')) !== null;
+            },
+            logout() {
+                axiosInstance.post('/api/logout')
+                    .then(r => {
+                        console.log(r.status);
+                        localStorage.removeItem('userData');
+                        this.checkAuth();
+                        console.log("jefbiezhf")
+                        this.$router.push('/login');
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    });
             }
+        },
+        mounted() {
+            this.checkAuth();
         }
     }
 </script>

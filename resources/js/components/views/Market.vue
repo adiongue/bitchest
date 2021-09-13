@@ -27,7 +27,7 @@ export default {
   },
   data: function() {
     return {
-      headerFields:['Nom', 'Code','Prix ($)'],//Headers tab
+      headerFields:['Nom', 'Code','Prix (€)'],//Headers tab
       basePath: 'currency',
       currencies : [],
     }

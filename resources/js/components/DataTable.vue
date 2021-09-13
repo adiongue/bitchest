@@ -16,6 +16,9 @@
             <span v-else-if="value !== null" >{{ value }}</span>
             <span v-else class="no-data">-</span>
           </td>
+          <td v-if="headerFields !== null && headerFields.includes('action')">
+            <button type="button" class="btn btn-success" @click="sellCurrency(item.id)">vendre</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -23,27 +26,32 @@
 </template>
 
 <script>
+import axiosInstance from "./utils/AxiosTokenInstance";
+
 export default {
   name: 'DataTable',
   props: {
     headerFields: {
       type: Array,
       require:true
-    }, 
+    },
     data:{
       type: Array|Object,
       require:true
-    }, 
+    },
     basePath:{
       type:String,
-    }, 
+    },
     imgExtention:{
       type:String,
       default: null
-    }, 
+    },
     showId:{
       type:Boolean,
       default: true
+    },
+    sellCurrency:{
+      type: Function
     }
   },
   methods: {
@@ -51,15 +59,26 @@ export default {
       e.preventDefault();
     },
     rowClicked (index) {
-      this.$router.push({path: `/${this.basePath}/${index}`})
+      if (!this.headerFields.includes('action')) {
+          this.$router.push({path: `/${this.basePath}/${index}`})
+      }
     },
-    imgSrcGenerator(name) { 
-      let imgName = name.replace(" ", "").toLowerCase(); 
-      let src = `../../assets/${imgName}.${this.imgExtention}`;
-      return src;
+    imgSrcGenerator(name) {
+      let imgName = name.replace(" ", "").toLowerCase();
+      return `../../assets/${imgName}.${this.imgExtention}`;
     },
     hasToHide(index) {
       return (!this.showId && index === 'id');
+    },
+    sellCurrencyMethod(currencyId) {
+        console.log(currencyId);
+        this.sellCurrency(currencyId);
+        /*axiosInstance.post('/api/sellCurrency', {"currency_id": currencyId})
+            .then(response => {
+                console.log(response.status);
+                console.log(response.data);
+            })
+            .catch(err => {console.log(err)});*/
     }
   },
 }
@@ -86,7 +105,7 @@ export default {
       background-color: #3c4b84;
       color: #ffffff;
       text-align: left;
-  }  
+  }
   .styled-table th,
   .styled-table td {
       padding: 12px 15px;
@@ -97,11 +116,11 @@ export default {
   .styled-table td img{
       margin-right: 2%;
   }
-  
+
   .styled-table tbody tr {
       border-bottom: thin solid #dddddd;
   }
-  .table-row:hover { 
+  .table-row:hover {
       box-shadow: inset 0 0 100px 100px rgba(0, 0, 0, 0.3);
   }
   .styled-table tbody tr:nth-of-type(even) {

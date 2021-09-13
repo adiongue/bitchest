@@ -36,15 +36,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new user.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-    /**
      * Store a newly created user in database.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -100,16 +91,6 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    /**
-     * Show the form for editing the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified user in database.
@@ -155,5 +136,20 @@ class UserController extends Controller
         $user->delete();
 
         return response('', 204);
+    }
+
+    /**
+     * getting current user info.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserInfos()
+    {
+        $user = auth()->user();
+        if ($user == null) {
+            return response(['message' => "unauthenticated"], 401);
+        }
+
+        return response($user);
     }
 }
